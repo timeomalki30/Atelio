@@ -2368,9 +2368,49 @@
       .a-kpi-strip { grid-template-columns: repeat(2, 1fr); }
       .a-rating-hero { grid-template-columns: 1fr; gap: 24px; }
     }
+
+    /* Demo bar — indique clairement que c'est une preview */
+    .demo-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: linear-gradient(90deg, #0B2440 0%, #15375E 100%);
+      color: white;
+      padding: 10px 20px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-family: var(--font-body);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .demo-bar strong {
+      color: #FFB686;
+      font-family: var(--font-head);
+      font-weight: 700;
+    }
+    .demo-bar a {
+      color: white;
+      font-weight: 700;
+      text-decoration: underline;
+      font-family: var(--font-head);
+    }
+    .demo-bar a:hover { color: #FFB686; }
+    body.has-demo-bar .pro-sidebar { top: 41px; height: calc(100vh - 41px); }
+    @media (max-width: 1100px) {
+      body.has-demo-bar .pro-sidebar { height: auto; top: auto; }
+    }
   </style>
 </head>
-<body>
+<body class="has-demo-bar">
+
+  <!-- Demo bar — préviens que c'est une démo (page accessible via "Voir la démo") -->
+  <div class="demo-bar">
+    <span><strong>Aperçu</strong> du tableau de bord artisan · Les données affichées sont fictives.</span>
+    <a href="devenir-artisan.html">Devenir Pionnier (gratuit) →</a>
+  </div>
 
   <div class="pro-shell">
 
