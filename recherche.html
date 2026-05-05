@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plombiers à Paris · Atelio</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B2440'/%3E%3Crect x='0' y='19' width='32' height='13' rx='0' fill='%23DD5A2A'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='18' font-weight='800' fill='white' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+
+  <style>
+    /* ============================================================
+       PAGE RECHERCHE V2 — design premium 2026
+       ============================================================ */
+
+    /* Search toolbar — sticky sous la nav */
+    .search-toolbar {
+      background: var(--c-surface-warm);
+      border-bottom: 1px solid var(--c-border);
+      padding: 18px 0;
+      position: sticky;
+      top: 65px;
+      z-index: 40;
+    }
+    .toolbar-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 24px;
+      flex-wrap: wrap;
+    }
+    .toolbar-field {
+      flex: 1;
+      min-width: 200px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 18px;
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-pill);
+      max-width: 320px;
+      transition: all var(--transition-fast);
+    }
+    .toolbar-field:focus-within {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px var(--c-primary-soft);
+    }
+    .toolbar-field svg { width: 18px; height: 18px; color: var(--c-text-muted); flex-shrink: 0; }
+    .toolbar-field input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: var(--fs-sm);
+      font-weight: 500;
+      min-width: 0;
+    }
+    .toolbar-search .btn { margin-left: auto; }
+
+    .results-layout {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 32px 24px 96px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* Filters sidebar V2 */
+    .filters {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-lg);
+      padding: 24px;
+      position: sticky;
+      top: 165px;
+      box-shadow: var(--shadow-xs);
+    }
+    .filters-title {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: var(--fs-lg);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      letter-spacing: -0.02em;
+    }
+    .filters-title button {
+      font-size: var(--fs-xs);
+      color: var(--c-accent);
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .filters-title button:hover { text-decoration: underline; }
+
+    .filter-group { padding: 18px 0; border-top: 1px solid var(--c-border); }
+    .filter-group:first-of-type { border-top: none; padding-top: 8px; }
+    .filter-group h4 {
+      font-family: var(--font-head);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--c-text);
+    }
+    .filter-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 0;
+      font-size: var(--fs-sm);
+      cursor: pointer;
+      color: var(--c-text-soft);
+      transition: color var(--transition-fast);
+    }
+    .filter-option:hover { color: var(--c-text); }
+    .filter-option input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--c-accent);
+      cursor: pointer;
+    }
+    .filter-option .count {
+      margin-left: auto;
+      color: var(--c-text-muted);
+      font-size: 12px;
+      background: var(--c-bg);
+      padding: 2px 8px;
+      border-radius: var(--r-pill);
+    }
+    .filter-option-urgent {
+      background: var(--c-accent-soft);
+      padding: 10px 12px !important;
+      border-radius: var(--r-md);
+      margin-top: 8px;
+    }
+    .filter-option-urgent strong { color: var(--c-accent); }
+
+    /* Range slider */
+    .range-slider { width: 100%; accent-color: var(--c-accent); cursor: pointer; }
+    .range-display {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--c-text-muted);
+      margin-top: 4px;
+    }
+    .range-display strong { color: var(--c-text); font-family: var(--font-head); font-size: var(--fs-sm); }
+
+    /* Results header */
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .results-count {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: var(--fs-2xl);
+      letter-spacing: -0.025em;
+    }
+    .results-count span { color: var(--c-text-muted); font-weight: 400; font-size: var(--fs-md); }
+    .sort-select {
+      padding: 10px 14px;
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-pill);
+      background: var(--c-surface);
+      font-size: var(--fs-sm);
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .sort-select:hover { border-color: var(--c-primary); }
+
+    /* Active filter chips */
+    .active-filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--c-primary-soft);
+      color: var(--c-primary);
+      border-radius: var(--r-pill);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .filter-chip:hover { background: var(--c-primary); color: white; }
+    .filter-chip svg { width: 12px; height: 12px; }
+
+    /* Artisan card V2 */
+    .artisan-card {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-lg);
+      padding: 24px;
+      margin-bottom: 16px;
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 24px;
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+    .artisan-card:hover {
+      border-color: var(--c-primary);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    .artisan-photo {
+      width: 96px;
+      height: 96px;
+      border-radius: var(--r-md);
+      background: linear-gradient(135deg, var(--c-primary), #2A5485);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 32px;
+      color: white;
+      flex-shrink: 0;
+      letter-spacing: -0.03em;
+    }
+    .artisan-photo.terra { background: linear-gradient(135deg, var(--c-accent), #F08C5C); }
+    .artisan-photo.green { background: linear-gradient(135deg, var(--c-success), #4FA17C); }
+    .artisan-photo.gold { background: linear-gradient(135deg, var(--c-warning), #E0A347); }
+
+    .artisan-meta { min-width: 0; }
+    .artisan-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 6px;
+    }
+    .artisan-name {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: var(--fs-lg);
+      color: var(--c-text);
+      letter-spacing: -0.02em;
+    }
+    .artisan-craft { color: var(--c-text-soft); font-size: var(--fs-sm); margin-bottom: 10px; }
+    .artisan-rating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: var(--fs-sm);
+      flex-shrink: 0;
+      background: var(--c-bg);
+      padding: 6px 12px;
+      border-radius: var(--r-pill);
+    }
+    .artisan-rating .score {
+      font-family: var(--font-head);
+      font-weight: 800;
+      color: var(--c-text);
+      font-size: var(--fs-md);
+    }
+    .artisan-rating .count { color: var(--c-text-muted); font-size: 13px; }
+    .artisan-rating svg { color: var(--c-warning); width: 16px; height: 16px; fill: currentColor; }
+
+    .artisan-badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin: 10px 0 14px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      background: var(--c-primary-soft);
+      color: var(--c-primary);
+      border-radius: var(--r-pill);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge.cert { background: var(--c-success-soft); color: var(--c-success); }
+    .badge.urgent { background: var(--c-accent-soft); color: var(--c-accent); }
+    .badge svg { width: 12px; height: 12px; }
+
+    .artisan-info-row {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: var(--fs-sm);
+      color: var(--c-text-soft);
+      margin-bottom: 18px;
+    }
+    .artisan-info-row span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .artisan-info-row svg { width: 14px; height: 14px; opacity: 0.7; }
+
+    /* Calendrier inline V2 */
+    .availability {
+      border-top: 1px solid var(--c-border);
+      padding-top: 18px;
+    }
+    .avail-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--c-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .avail-title svg { width: 14px; height: 14px; }
+
+    .day-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+    .day-col { text-align: center; }
+    .day-label {
+      font-size: 11px;
+      color: var(--c-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .day-num {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: var(--fs-sm);
+      color: var(--c-text);
+      margin-bottom: 10px;
+    }
+    .slots {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .slot {
+      padding: 8px 4px;
+      border-radius: var(--r-sm);
+      background: var(--c-primary-soft);
+      color: var(--c-primary);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      border: none;
+      font-family: var(--font-head);
+    }
+    .slot:hover {
+      background: var(--c-primary);
+      color: white;
+      transform: translateY(-1px);
+    }
+    .slot.urgent {
+      background: var(--c-accent-soft);
+      color: var(--c-accent);
+    }
+    .slot.urgent:hover {
+      background: var(--c-accent);
+      color: white;
+    }
+    .slot.empty {
+      background: transparent;
+      color: var(--c-text-muted);
+      cursor: default;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .slot.empty:hover { background: transparent; transform: none; color: var(--c-text-muted); }
+
+    .more-slots {
+      margin-top: 14px;
+      text-align: center;
+      font-size: var(--fs-sm);
+      color: var(--c-primary);
+      font-weight: 600;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: var(--r-sm);
+      transition: all var(--transition-fast);
+    }
+    .more-slots:hover { color: var(--c-accent); background: var(--c-bg); }
+
+    /* ============================================================
+       MODAL BOOKING — flow en 3 étapes
+       ============================================================ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 14, 19, 0.6);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open {
+      display: flex;
+      animation: fadeIn 200ms var(--ease);
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .modal {
+      background: var(--c-surface);
+      border-radius: var(--r-xl);
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-xl);
+      animation: slideUp 300ms var(--ease-spring);
+      position: relative;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Modal stepper */
+    .modal-stepper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 24px 32px 0;
+    }
+    .step-dot {
+      flex: 1;
+      height: 4px;
+      background: var(--c-border);
+      border-radius: 2px;
+      transition: background var(--transition);
+    }
+    .step-dot.active { background: var(--c-accent); }
+    .step-dot.done { background: var(--c-success); }
+
+    .modal-body { padding: 24px 32px 32px; }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--c-text-soft);
+      cursor: pointer;
+      background: var(--c-bg);
+      transition: all var(--transition-fast);
+      z-index: 10;
+    }
+    .modal-close:hover { background: var(--c-text); color: white; }
+
+    .modal-step-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: var(--c-accent-soft);
+      color: var(--c-accent);
+      border-radius: var(--r-pill);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+
+    .modal h3 {
+      font-size: var(--fs-2xl);
+      letter-spacing: -0.025em;
+      margin-bottom: 8px;
+    }
+    .modal-subtitle { color: var(--c-text-soft); margin-bottom: 24px; font-size: var(--fs-md); }
+
+    .modal-summary {
+      background: var(--c-bg);
+      border-radius: var(--r-md);
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .modal-summary .artisan-photo {
+      width: 56px;
+      height: 56px;
+      font-size: 20px;
+    }
+    .modal-summary-meta strong {
+      display: block;
+      font-family: var(--font-head);
+      font-size: var(--fs-md);
+    }
+    .modal-summary-meta span {
+      color: var(--c-text-soft);
+      font-size: var(--fs-sm);
+    }
+    .modal-slot-pill {
+      display: inline-block;
+      background: var(--c-accent);
+      color: white;
+      padding: 4px 12px;
+      border-radius: var(--r-pill);
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 6px;
+      font-family: var(--font-head);
+    }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: var(--fs-sm);
+      margin-bottom: 6px;
+      color: var(--c-text);
+      font-family: var(--font-head);
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-md);
+      background: var(--c-surface);
+      font-size: var(--fs-md);
+      transition: all var(--transition-fast);
+      font-family: var(--font-body);
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--c-primary);
+      outline: none;
+      box-shadow: 0 0 0 3px var(--c-primary-soft);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .form-help {
+      font-size: 12px;
+      color: var(--c-text-muted);
+      margin-top: 4px;
+    }
+
+    .urgency-toggle {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .urgency-pill {
+      flex: 1;
+      min-width: 120px;
+      padding: 12px 16px;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--r-md);
+      background: var(--c-surface);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      text-align: center;
+      font-family: var(--font-head);
+    }
+    .urgency-pill:hover { border-color: var(--c-primary); }
+    .urgency-pill.active {
+      border-color: var(--c-accent);
+      background: var(--c-accent-soft);
+      color: var(--c-accent);
+    }
+    .urgency-pill small { display: block; font-size: 11px; font-weight: 500; color: var(--c-text-muted); margin-top: 2px; }
+    .urgency-pill.active small { color: var(--c-accent); }
+
+    .photo-upload {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .photo-thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--r-md);
+      background: var(--c-bg);
+      border: 2px dashed var(--c-border);
+      display: grid;
+      place-items: center;
+      color: var(--c-text-muted);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .photo-thumb:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+      background: var(--c-primary-soft);
+    }
+    .photo-thumb svg { width: 24px; height: 24px; }
+
+    .modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--c-border);
+    }
+    .modal-footer .price-summary {
+      font-size: var(--fs-sm);
+      color: var(--c-text-soft);
+    }
+    .modal-footer .price-summary strong {
+      color: var(--c-text);
+      font-family: var(--font-head);
+      font-size: var(--fs-md);
+      display: block;
+    }
+
+    .modal-trust {
+      display: flex;
+      gap: 16px;
+      margin-top: 18px;
+      padding: 12px 16px;
+      background: var(--c-success-soft);
+      border-radius: var(--r-md);
+      font-size: 12px;
+      color: var(--c-success);
+      font-weight: 500;
+    }
+    .modal-trust strong { display: block; font-family: var(--font-head); }
+
+    /* Confirmation success state */
+    .modal.success .modal-body { text-align: center; padding: 48px 32px; }
+    .success-icon {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: var(--c-success);
+      color: white;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 20px;
+      animation: scaleIn 400ms var(--ease-spring);
+    }
+    @keyframes scaleIn {
+      from { transform: scale(0); }
+      to { transform: scale(1); }
+    }
+    .success-icon svg { width: 48px; height: 48px; }
+    .success-detail {
+      background: var(--c-bg);
+      border-radius: var(--r-md);
+      padding: 16px 20px;
+      margin: 24px 0;
+      text-align: left;
+      font-size: var(--fs-sm);
+    }
+    .success-detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--c-border);
+    }
+    .success-detail-row:last-child { border-bottom: none; }
+    .success-detail-row strong { color: var(--c-text); }
+
+    /* Empty state */
+    .no-results {
+      text-align: center;
+      padding: 64px 24px;
+      background: var(--c-surface);
+      border-radius: var(--r-lg);
+      border: 1px dashed var(--c-border);
+    }
+    .no-results h3 { font-size: var(--fs-lg); margin-bottom: 8px; }
+    .no-results p { margin-bottom: 16px; }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .results-layout { grid-template-columns: 1fr; }
+      .filters { position: static; }
+      .day-grid { grid-template-columns: repeat(3, 1fr); }
+      .artisan-card { grid-template-columns: 1fr; }
+      .artisan-photo { width: 64px; height: 64px; font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       BANNIÈRE WAITLIST — connectée à Brevo
+       ============================================================ -->
+  <div class="waitlist-banner" id="waitlistBanner" role="region" aria-label="Liste d'attente">
+    <div class="waitlist-text">
+      <span class="pulse-dot"></span>
+      <span><strong>Lancement bientôt dans votre ville</strong> — Inscrivez-vous pour être prioritaire et accéder gratuitement à nos premiers artisans vérifiés</span>
+    </div>
+    <form class="waitlist-form" id="waitlistForm" novalidate>
+      <input type="text" id="waitlistFirstName" placeholder="Prénom" autocomplete="given-name" required>
+      <input type="text" id="waitlistLastName" placeholder="Nom" autocomplete="family-name" required>
+      <input type="email" id="waitlistEmail" placeholder="Email" autocomplete="email" required>
+      <input type="tel" id="waitlistPhone" placeholder="Téléphone" autocomplete="tel" required>
+      <input type="text" id="waitlistPostal" placeholder="Code postal" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" required>
+      <button type="submit" id="waitlistSubmit">
+        Je veux être prioritaire
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </button>
+    </form>
+    <div class="waitlist-message" id="waitlistMessage" aria-live="polite"></div>
+    <button class="waitlist-close" id="waitlistClose" aria-label="Fermer la bannière">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark"><span>A</span></span>
+        Atelio
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html#categories">Métiers</a></li>
+          <li><a href="index.html#how">Comment ça marche</a></li>
+          <li><a href="index.html#artisans">Devenir artisan</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <a href="devenir-artisan.html" class="btn btn-ghost btn-sm">Espace artisan</a>
+        <a href="#" class="btn btn-primary btn-sm" onclick="toast('Connexion · Démo')">Mon compte</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search toolbar -->
+  <div class="search-toolbar">
+    <form class="toolbar-search" id="toolbarSearch" onsubmit="event.preventDefault(); rerunSearch();">
+      <div class="toolbar-field">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        <input type="text" id="qCraft" placeholder="Métier" value="Plombier">
+      </div>
+      <div class="toolbar-field">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <input type="text" id="qLoc" placeholder="Ville" value="Paris 11e">
+      </div>
+      <button class="btn btn-primary btn-sm" type="submit">
+        Rechercher
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </button>
+    </form>
+  </div>
+
+  <!-- Results layout -->
+  <div class="results-layout">
+
+    <!-- FILTERS -->
+    <aside class="filters">
+      <div class="filters-title">
+        Filtres
+        <button onclick="resetFilters()">Réinitialiser</button>
+      </div>
+
+      <div class="filter-group">
+        <h4>Disponibilité</h4>
+        <label class="filter-option">
+          <input type="radio" name="dispo" value="any" checked onchange="updateFilters()">
+          N'importe quand
+        </label>
+        <label class="filter-option">
+          <input type="radio" name="dispo" value="today" onchange="updateFilters()">
+          Aujourd'hui
+        </label>
+        <label class="filter-option">
+          <input type="radio" name="dispo" value="tomorrow" onchange="updateFilters()">
+          Demain
+        </label>
+        <label class="filter-option">
+          <input type="radio" name="dispo" value="week" onchange="updateFilters()">
+          Cette semaine
+        </label>
+        <label class="filter-option filter-option-urgent">
+          <input type="checkbox" id="urgentFilter" onchange="updateFilters()">
+          <strong>⚡ Urgence (sous 2 h)</strong>
+        </label>
+      </div>
+
+      <div class="filter-group">
+        <h4>Distance max</h4>
+        <input type="range" min="1" max="50" value="10" class="range-slider" id="rangeSlider" oninput="updateRange()">
+        <div class="range-display">
+          <span>1 km</span>
+          <strong id="rangeValue">10 km</strong>
+          <span>50 km</span>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h4>Tarif horaire</h4>
+        <label class="filter-option">
+          <input type="checkbox" onchange="updateFilters()"> Moins de 50 € <span class="count">12</span>
+        </label>
+        <label class="filter-option">
+          <input type="checkbox" checked onchange="updateFilters()"> 50 — 80 € <span class="count">38</span>
+        </label>
+        <label class="filter-option">
+          <input type="checkbox" onchange="updateFilters()"> 80 — 120 € <span class="count">21</span>
+        </label>
+        <label class="filter-option">
+          <input type="checkbox" onchange="updateFilters()"> Plus de 120 € <span class="count">9</span>
+        </label>
+      </div>
+
+      <div class="filter-group">
+        <h4>Certifications</h4>
+        <label class="filter-option">
+          <input type="checkbox" checked onchange="updateFilters()"> RGE Qualibat <span class="count">42</span>
+        </label>
+        <label class="filter-option">
+          <input type="checkbox" onchange="updateFilters()"> Qualifelec <span class="count">28</span>
+        </label>
+        <label class="filter-option">
+          <input type="checkbox" onchange="updateFilters()"> Garantie décennale <span class="count">76</span>
+        </label>
+        <label class="filter-option">
+          <input type="checkbox" onchange="updateFilters()"> Assurance pro <span class="count">80</span>
+        </label>
+      </div>
+
+      <div class="filter-group">
+        <h4>Note minimum</h4>
+        <label class="filter-option"><input type="radio" name="rating" checked onchange="updateFilters()"> Toutes</label>
+        <label class="filter-option"><input type="radio" name="rating" onchange="updateFilters()"> 4★ et plus</label>
+        <label class="filter-option"><input type="radio" name="rating" onchange="updateFilters()"> 4,5★ et plus</label>
+      </div>
+    </aside>
+
+    <!-- RESULTS -->
+    <main>
+      <div class="results-header">
+        <div>
+          <div class="results-count">
+            <span id="resultsLoc">80 plombiers à Paris&nbsp;11ᵉ</span>
+          </div>
+          <p style="margin-top: 4px; color: var(--c-text-muted); font-size: var(--fs-sm);">
+            <span id="filteredCount">42</span> correspondent à vos filtres · disponibilités à jour
+          </p>
+        </div>
+        <select class="sort-select" onchange="toast('Tri appliqué')">
+          <option>Trier · Pertinence</option>
+          <option>Mieux notés</option>
+          <option>Plus proches</option>
+          <option>Tarif croissant</option>
+          <option>Disponibilité immédiate</option>
+        </select>
+      </div>
+
+      <div class="active-filters">
+        <span class="filter-chip" onclick="this.remove(); toast('Filtre retiré')">
+          50 — 80 €
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </span>
+        <span class="filter-chip" onclick="this.remove(); toast('Filtre retiré')">
+          RGE Qualibat
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </span>
+        <span class="filter-chip" onclick="this.remove(); toast('Filtre retiré')">
+          Moins de 10 km
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </span>
+      </div>
+
+      <div id="resultsList">
+        <!-- Carte 1 -->
+        <article class="artisan-card" onclick="if(!event.target.closest('.slot, .more-slots')) showProfile('Karim Benali — Plomberie KB')">
+          <div class="artisan-photo">KB</div>
+          <div class="artisan-meta">
+            <div class="artisan-header">
+              <div>
+                <div class="artisan-name">Karim Benali — Plomberie KB</div>
+                <div class="artisan-craft">Plombier-chauffagiste · 12 ans d'expérience</div>
+              </div>
+              <div class="artisan-rating">
+                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <span class="score">4,9</span>
+                <span class="count">(284)</span>
+              </div>
+            </div>
+            <div class="artisan-badges">
+              <span class="badge cert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg> RGE Qualibat</span>
+              <span class="badge cert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg> Garantie décennale</span>
+              <span class="badge urgent">⚡ Dépannage urgent</span>
+            </div>
+            <div class="artisan-info-row">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> 1,2 km — Paris 11ᵉ</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Dès 65 €/h</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> 1 247 interventions</span>
+            </div>
+
+            <div class="availability">
+              <div class="avail-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                Prochaines disponibilités
+              </div>
+              <div class="day-grid">
+                <div class="day-col">
+                  <div class="day-label">Aujourd'hui</div>
+                  <div class="day-num">2 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Karim Benali','KB','plombier','Paris 11ᵉ','aujourd''hui 14:00','primary')">14:00</button>
+                    <button class="slot" onclick="book('Karim Benali','KB','plombier','Paris 11ᵉ','aujourd''hui 16:30','primary')">16:30</button>
+                    <button class="slot" onclick="book('Karim Benali','KB','plombier','Paris 11ᵉ','aujourd''hui 18:00','primary')">18:00</button>
+                  </div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Lun.</div>
+                  <div class="day-num">4 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Karim Benali','KB','plombier','Paris 11ᵉ','lun. 4 mai 09:00','primary')">09:00</button>
+                    <button class="slot" onclick="book('Karim Benali','KB','plombier','Paris 11ᵉ','lun. 4 mai 10:30','primary')">10:30</button>
+                    <button class="slot" onclick="book('Karim Benali','KB','plombier','Paris 11ᵉ','lun. 4 mai 14:00','primary')">14:00</button>
+                  </div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Mar.</div>
+                  <div class="day-num">5 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Karim Benali','KB','plombier','Paris 11ᵉ','mar. 5 mai 11:00','primary')">11:00</button>
+                    <span class="slot empty">complet a.m.</span>
+                    <button class="slot" onclick="book('Karim Benali','KB','plombier','Paris 11ᵉ','mar. 5 mai 17:00','primary')">17:00</button>
+                  </div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Mer.</div>
+                  <div class="day-num">6 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Karim Benali','KB','plombier','Paris 11ᵉ','mer. 6 mai 08:30','primary')">08:30</button>
+                    <button class="slot" onclick="book('Karim Benali','KB','plombier','Paris 11ᵉ','mer. 6 mai 10:00','primary')">10:00</button>
+                    <button class="slot" onclick="book('Karim Benali','KB','plombier','Paris 11ᵉ','mer. 6 mai 15:30','primary')">15:30</button>
+                  </div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Jeu.</div>
+                  <div class="day-num">7 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Karim Benali','KB','plombier','Paris 11ᵉ','jeu. 7 mai 09:00','primary')">09:00</button>
+                    <button class="slot" onclick="book('Karim Benali','KB','plombier','Paris 11ᵉ','jeu. 7 mai 11:30','primary')">11:30</button>
+                    <button class="slot" onclick="book('Karim Benali','KB','plombier','Paris 11ᵉ','jeu. 7 mai 16:00','primary')">16:00</button>
+                  </div>
+                </div>
+              </div>
+              <div class="more-slots" onclick="event.stopPropagation(); toast('Plus de créneaux affichés')">Voir plus de disponibilités →</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Carte 2 -->
+        <article class="artisan-card" onclick="if(!event.target.closest('.slot, .more-slots')) showProfile('Sandra Roussel — Roussel & Fils')">
+          <div class="artisan-photo terra">SR</div>
+          <div class="artisan-meta">
+            <div class="artisan-header">
+              <div>
+                <div class="artisan-name">Sandra Roussel — Roussel &amp; Fils</div>
+                <div class="artisan-craft">Plomberie générale &amp; sanitaire · 18 ans</div>
+              </div>
+              <div class="artisan-rating">
+                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <span class="score">4,8</span>
+                <span class="count">(412)</span>
+              </div>
+            </div>
+            <div class="artisan-badges">
+              <span class="badge cert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg> RGE Qualibat</span>
+              <span class="badge">Entreprise familiale</span>
+              <span class="badge cert">Décennale</span>
+            </div>
+            <div class="artisan-info-row">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> 2,4 km — Paris 12ᵉ</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Dès 70 €/h</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> 2 108 interventions</span>
+            </div>
+
+            <div class="availability">
+              <div class="avail-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                Prochaines disponibilités
+              </div>
+              <div class="day-grid">
+                <div class="day-col">
+                  <div class="day-label">Aujourd'hui</div>
+                  <div class="day-num">2 mai</div>
+                  <div class="slots"><span class="slot empty">complet</span></div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Lun.</div>
+                  <div class="day-num">4 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Sandra Roussel','SR','plombier','Paris 12ᵉ','lun. 4 mai 14:00','terra')">14:00</button>
+                    <button class="slot" onclick="book('Sandra Roussel','SR','plombier','Paris 12ᵉ','lun. 4 mai 16:00','terra')">16:00</button>
+                  </div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Mar.</div>
+                  <div class="day-num">5 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Sandra Roussel','SR','plombier','Paris 12ᵉ','mar. 5 mai 09:30','terra')">09:30</button>
+                    <button class="slot" onclick="book('Sandra Roussel','SR','plombier','Paris 12ᵉ','mar. 5 mai 11:00','terra')">11:00</button>
+                    <button class="slot" onclick="book('Sandra Roussel','SR','plombier','Paris 12ᵉ','mar. 5 mai 14:30','terra')">14:30</button>
+                  </div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Mer.</div>
+                  <div class="day-num">6 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Sandra Roussel','SR','plombier','Paris 12ᵉ','mer. 6 mai 10:00','terra')">10:00</button>
+                    <button class="slot" onclick="book('Sandra Roussel','SR','plombier','Paris 12ᵉ','mer. 6 mai 15:00','terra')">15:00</button>
+                    <button class="slot" onclick="book('Sandra Roussel','SR','plombier','Paris 12ᵉ','mer. 6 mai 17:30','terra')">17:30</button>
+                  </div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Jeu.</div>
+                  <div class="day-num">7 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Sandra Roussel','SR','plombier','Paris 12ᵉ','jeu. 7 mai 08:30','terra')">08:30</button>
+                    <button class="slot" onclick="book('Sandra Roussel','SR','plombier','Paris 12ᵉ','jeu. 7 mai 13:00','terra')">13:00</button>
+                    <button class="slot" onclick="book('Sandra Roussel','SR','plombier','Paris 12ᵉ','jeu. 7 mai 16:30','terra')">16:30</button>
+                  </div>
+                </div>
+              </div>
+              <div class="more-slots" onclick="event.stopPropagation(); toast('Plus de créneaux affichés')">Voir plus de disponibilités →</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Carte 3 -->
+        <article class="artisan-card" onclick="if(!event.target.closest('.slot, .more-slots')) showProfile('Mehdi Naceur — AquaPro')">
+          <div class="artisan-photo green">MN</div>
+          <div class="artisan-meta">
+            <div class="artisan-header">
+              <div>
+                <div class="artisan-name">Mehdi Naceur — AquaPro Île-de-France</div>
+                <div class="artisan-craft">Dépannage 24/7 · Spécialiste fuites &amp; canalisations</div>
+              </div>
+              <div class="artisan-rating">
+                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <span class="score">4,7</span>
+                <span class="count">(176)</span>
+              </div>
+            </div>
+            <div class="artisan-badges">
+              <span class="badge urgent">⚡ Dispo dans 1 h</span>
+              <span class="badge cert">Décennale</span>
+              <span class="badge">Devis gratuit</span>
+            </div>
+            <div class="artisan-info-row">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> 0,8 km — Paris 11ᵉ</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Dès 60 €/h</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> 942 interventions</span>
+            </div>
+
+            <div class="availability">
+              <div class="avail-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                Prochaines disponibilités
+              </div>
+              <div class="day-grid">
+                <div class="day-col">
+                  <div class="day-label">Aujourd'hui</div>
+                  <div class="day-num">2 mai</div>
+                  <div class="slots">
+                    <button class="slot urgent" onclick="book('Mehdi Naceur','MN','plombier','Paris 11ᵉ','aujourd''hui 13:30','green')">⚡13:30</button>
+                    <button class="slot" onclick="book('Mehdi Naceur','MN','plombier','Paris 11ᵉ','aujourd''hui 15:00','green')">15:00</button>
+                    <button class="slot" onclick="book('Mehdi Naceur','MN','plombier','Paris 11ᵉ','aujourd''hui 17:00','green')">17:00</button>
+                    <button class="slot" onclick="book('Mehdi Naceur','MN','plombier','Paris 11ᵉ','aujourd''hui 19:00','green')">19:00</button>
+                  </div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Lun.</div>
+                  <div class="day-num">4 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Mehdi Naceur','MN','plombier','Paris 11ᵉ','lun. 4 mai 08:00','green')">08:00</button>
+                    <button class="slot" onclick="book('Mehdi Naceur','MN','plombier','Paris 11ᵉ','lun. 4 mai 11:30','green')">11:30</button>
+                    <button class="slot" onclick="book('Mehdi Naceur','MN','plombier','Paris 11ᵉ','lun. 4 mai 17:00','green')">17:00</button>
+                  </div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Mar.</div>
+                  <div class="day-num">5 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Mehdi Naceur','MN','plombier','Paris 11ᵉ','mar. 5 mai 09:00','green')">09:00</button>
+                    <button class="slot" onclick="book('Mehdi Naceur','MN','plombier','Paris 11ᵉ','mar. 5 mai 14:00','green')">14:00</button>
+                  </div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Mer.</div>
+                  <div class="day-num">6 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Mehdi Naceur','MN','plombier','Paris 11ᵉ','mer. 6 mai 09:00','green')">09:00</button>
+                    <button class="slot" onclick="book('Mehdi Naceur','MN','plombier','Paris 11ᵉ','mer. 6 mai 12:00','green')">12:00</button>
+                    <button class="slot" onclick="book('Mehdi Naceur','MN','plombier','Paris 11ᵉ','mer. 6 mai 15:00','green')">15:00</button>
+                  </div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Jeu.</div>
+                  <div class="day-num">7 mai</div>
+                  <div class="slots">
+                    <span class="slot empty">complet a.m.</span>
+                    <button class="slot" onclick="book('Mehdi Naceur','MN','plombier','Paris 11ᵉ','jeu. 7 mai 14:30','green')">14:30</button>
+                    <button class="slot" onclick="book('Mehdi Naceur','MN','plombier','Paris 11ᵉ','jeu. 7 mai 17:30','green')">17:30</button>
+                  </div>
+                </div>
+              </div>
+              <div class="more-slots" onclick="event.stopPropagation(); toast('Plus de créneaux affichés')">Voir plus de disponibilités →</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Carte 4 -->
+        <article class="artisan-card" onclick="if(!event.target.closest('.slot, .more-slots')) showProfile('Pascal Leblanc — Leblanc Plomberie')">
+          <div class="artisan-photo gold">PL</div>
+          <div class="artisan-meta">
+            <div class="artisan-header">
+              <div>
+                <div class="artisan-name">Pascal Leblanc — Leblanc Plomberie</div>
+                <div class="artisan-craft">Sanitaires haut de gamme · Rénovation salle de bain</div>
+              </div>
+              <div class="artisan-rating">
+                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <span class="score">4,9</span>
+                <span class="count">(98)</span>
+              </div>
+            </div>
+            <div class="artisan-badges">
+              <span class="badge cert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg> RGE</span>
+              <span class="badge cert">Décennale</span>
+              <span class="badge">Spécialiste rénovation</span>
+            </div>
+            <div class="artisan-info-row">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> 3,1 km — Paris 3ᵉ</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Sur devis</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> 412 chantiers</span>
+            </div>
+
+            <div class="availability">
+              <div class="avail-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                Premier RDV de visite (gratuit)
+              </div>
+              <div class="day-grid">
+                <div class="day-col">
+                  <div class="day-label">Aujourd'hui</div>
+                  <div class="day-num">2 mai</div>
+                  <div class="slots"><span class="slot empty">complet</span></div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Lun.</div>
+                  <div class="day-num">4 mai</div>
+                  <div class="slots"><span class="slot empty">complet</span></div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Mar.</div>
+                  <div class="day-num">5 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Pascal Leblanc','PL','plombier','Paris 3ᵉ','mar. 5 mai 16:00','gold')">16:00</button>
+                  </div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Mer.</div>
+                  <div class="day-num">6 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Pascal Leblanc','PL','plombier','Paris 3ᵉ','mer. 6 mai 10:00','gold')">10:00</button>
+                    <button class="slot" onclick="book('Pascal Leblanc','PL','plombier','Paris 3ᵉ','mer. 6 mai 14:00','gold')">14:00</button>
+                  </div>
+                </div>
+                <div class="day-col">
+                  <div class="day-label">Jeu.</div>
+                  <div class="day-num">7 mai</div>
+                  <div class="slots">
+                    <button class="slot" onclick="book('Pascal Leblanc','PL','plombier','Paris 3ᵉ','jeu. 7 mai 09:30','gold')">09:30</button>
+                    <button class="slot" onclick="book('Pascal Leblanc','PL','plombier','Paris 3ᵉ','jeu. 7 mai 11:00','gold')">11:00</button>
+                    <button class="slot" onclick="book('Pascal Leblanc','PL','plombier','Paris 3ᵉ','jeu. 7 mai 15:00','gold')">15:00</button>
+                  </div>
+                </div>
+              </div>
+              <div class="more-slots" onclick="event.stopPropagation(); toast('Plus de créneaux affichés')">Voir plus de disponibilités →</div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div style="text-align: center; padding: 32px;">
+        <button class="btn btn-ghost btn-lg" onclick="toast('38 artisans supplémentaires chargés')">
+          Charger 38 artisans supplémentaires
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <!-- ============================================================
+       MODAL BOOKING — flow 3 étapes
+       ============================================================ -->
+  <div class="modal-overlay" id="modal" onclick="if(event.target===this) closeModal()">
+    <div class="modal" id="modalContent">
+      <button class="modal-close" onclick="closeModal()" aria-label="Fermer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+
+      <!-- Stepper -->
+      <div class="modal-stepper">
+        <div class="step-dot active" id="dot1"></div>
+        <div class="step-dot" id="dot2"></div>
+        <div class="step-dot" id="dot3"></div>
+      </div>
+
+      <div class="modal-body" id="modalStepContent">
+        <!-- Contenu injecté par JS selon l'étape -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <div class="toast-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <span id="toastMsg">Action effectuée</span>
+  </div>
+
+  <script>
+    // ====================================
+    // Toast
+    // ====================================
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ====================================
+    // Filtres
+    // ====================================
+    function updateFilters() {
+      const count = Math.floor(Math.random() * 30) + 25;
+      document.getElementById('filteredCount').textContent = count;
+      toast('Filtres mis à jour');
+    }
+    function updateRange() {
+      const v = document.getElementById('rangeSlider').value;
+      document.getElementById('rangeValue').textContent = v + ' km';
+    }
+    function resetFilters() {
+      document.querySelectorAll('.filter-option input[type=checkbox]').forEach(c => c.checked = false);
+      document.querySelectorAll('input[name=dispo]')[0].checked = true;
+      document.querySelectorAll('input[name=rating]')[0].checked = true;
+      document.getElementById('rangeSlider').value = 10;
+      document.getElementById('rangeValue').textContent = '10 km';
+      document.querySelectorAll('.filter-chip').forEach(c => c.remove());
+      document.getElementById('filteredCount').textContent = '80';
+      toast('Filtres réinitialisés');
+    }
+    function rerunSearch() {
+      const c = document.getElementById('qCraft').value;
+      const l = document.getElementById('qLoc').value;
+      document.getElementById('resultsLoc').textContent = `80 ${c.toLowerCase()}s à ${l}`;
+      toast(`Recherche : ${c} à ${l}`);
+    }
+
+    // ====================================
+    // Récupère ?metier= et ?lieu=
+    // ====================================
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('metier')) {
+      document.getElementById('qCraft').value = params.get('metier').charAt(0).toUpperCase() + params.get('metier').slice(1);
+    }
+    if (params.get('lieu')) {
+      document.getElementById('qLoc').value = params.get('lieu');
+    }
+    if (params.get('metier') || params.get('lieu')) {
+      const c = document.getElementById('qCraft').value;
+      const l = document.getElementById('qLoc').value;
+      document.getElementById('resultsLoc').textContent = `80 ${c.toLowerCase()}s à ${l}`;
+    }
+
+    // ====================================
+    // Profile click (placeholder)
+    // ====================================
+    function showProfile(name) {
+      toast('Profil de ' + name + ' (démo)');
+    }
+
+    // ====================================
+    // BOOKING FLOW — 3 étapes
+    // ====================================
+    let bookingData = {};
+
+    function book(name, initials, craft, loc, slot, photoColor) {
+      bookingData = { name, initials, craft, loc, slot, photoColor, urgency: 'standard' };
+      renderStep1();
+      document.getElementById('modal').classList.add('open');
+    }
+
+    function setStepperState(step) {
+      const dots = ['dot1','dot2','dot3'];
+      dots.forEach((id, idx) => {
+        const el = document.getElementById(id);
+        el.classList.remove('active', 'done');
+        if (idx + 1 < step) el.classList.add('done');
+        else if (idx + 1 === step) el.classList.add('active');
+      });
+    }
+
+    function renderStep1() {
+      setStepperState(1);
+      const photoClass = bookingData.photoColor === 'primary' ? '' : bookingData.photoColor;
+      document.getElementById('modalStepContent').innerHTML = `
+        <span class="modal-step-label">Étape 1/3 · Décrivez le besoin</span>
+        <h3>Confirmez votre réservation</h3>
+        <p class="modal-subtitle">Quelques détails pour que l'artisan arrive bien préparé.</p>
+
+        <div class="modal-summary">
+          <div class="artisan-photo ${photoClass}">${bookingData.initials}</div>
+          <div class="modal-summary-meta">
+            <strong>${bookingData.name}</strong>
+            <span>${bookingData.craft.charAt(0).toUpperCase() + bookingData.craft.slice(1)} · ${bookingData.loc}</span>
+            <div class="modal-slot-pill">${bookingData.slot}</div>
+          </div>
+        </div>
+
+        <form onsubmit="event.preventDefault(); goToStep2();">
+          <div class="form-group">
+            <label>Décrivez votre besoin</label>
+            <textarea id="needDescription" placeholder="Ex : fuite sous l'évier de la cuisine, eau qui coule en continu depuis ce matin…" required>${bookingData.needDescription || ''}</textarea>
+            <div class="form-help">Plus c'est précis, plus l'artisan arrivera préparé avec le bon matériel.</div>
+          </div>
+
+          <div class="form-group">
+            <label>Niveau d'urgence</label>
+            <div class="urgency-toggle">
+              <div class="urgency-pill ${bookingData.urgency === 'standard' ? 'active' : ''}" onclick="selectUrgency('standard')">
+                Standard
+                <small>Tarif normal</small>
+              </div>
+              <div class="urgency-pill ${bookingData.urgency === 'priority' ? 'active' : ''}" onclick="selectUrgency('priority')">
+                Prioritaire
+                <small>+ 15 €</small>
+              </div>
+              <div class="urgency-pill ${bookingData.urgency === 'urgent' ? 'active' : ''}" onclick="selectUrgency('urgent')">
+                ⚡ Urgence
+                <small>+ 35 €</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Photos (optionnel, mais recommandé)</label>
+            <div class="photo-upload">
+              <div class="photo-thumb" onclick="toast('Sélecteur de fichier (démo)')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              </div>
+              <div class="photo-thumb" onclick="toast('Sélecteur de fichier (démo)')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              </div>
+              <div class="photo-thumb" onclick="toast('Sélecteur de fichier (démo)')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              </div>
+            </div>
+            <div class="form-help">Diagnostic plus rapide, devis plus précis.</div>
+          </div>
+
+          <div class="modal-footer">
+            <div class="price-summary">
+              Tarif estimé
+              <strong>65 — 110 €</strong>
+            </div>
+            <button class="btn btn-primary btn-lg" type="submit">
+              Continuer
+              <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </form>
+      `;
+    }
+
+    function selectUrgency(u) {
+      bookingData.urgency = u;
+      document.querySelectorAll('.urgency-pill').forEach(p => p.classList.remove('active'));
+      event.target.closest('.urgency-pill').classList.add('active');
+    }
+
+    function goToStep2() {
+      bookingData.needDescription = document.getElementById('needDescription').value;
+      renderStep2();
+    }
+
+    function renderStep2() {
+      setStepperState(2);
+      const photoClass = bookingData.photoColor === 'primary' ? '' : bookingData.photoColor;
+      document.getElementById('modalStepContent').innerHTML = `
+        <span class="modal-step-label">Étape 2/3 · Vos coordonnées</span>
+        <h3>Vos informations</h3>
+        <p class="modal-subtitle">L'artisan vous contactera 15 min avant son arrivée.</p>
+
+        <div class="modal-summary">
+          <div class="artisan-photo ${photoClass}">${bookingData.initials}</div>
+          <div class="modal-summary-meta">
+            <strong>${bookingData.name}</strong>
+            <span>${bookingData.craft.charAt(0).toUpperCase() + bookingData.craft.slice(1)} · ${bookingData.loc}</span>
+            <div class="modal-slot-pill">${bookingData.slot}</div>
+          </div>
+        </div>
+
+        <form onsubmit="event.preventDefault(); goToStep3();">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Prénom</label>
+              <input type="text" id="firstName" value="${bookingData.firstName || ''}" required>
+            </div>
+            <div class="form-group">
+              <label>Nom</label>
+              <input type="text" id="lastName" value="${bookingData.lastName || ''}" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Téléphone</label>
+              <input type="tel" id="phone" placeholder="06 12 34 56 78" value="${bookingData.phone || ''}" required>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="email" placeholder="vous@email.fr" value="${bookingData.email || ''}" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Adresse de l'intervention</label>
+            <input type="text" id="address" placeholder="12 rue de la République, 75011 Paris" value="${bookingData.address || ''}" required>
+            <div class="form-help">Les coordonnées GPS sont calculées automatiquement.</div>
+          </div>
+
+          <div class="form-group">
+            <label>Code d'accès / informations utiles (optionnel)</label>
+            <input type="text" id="accessNotes" placeholder="Code porte, étage, digicode…" value="${bookingData.accessNotes || ''}">
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-ghost" type="button" onclick="renderStep1()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              Retour
+            </button>
+            <button class="btn btn-primary btn-lg" type="submit">
+              Voir le récapitulatif
+              <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </form>
+      `;
+    }
+
+    function goToStep3() {
+      bookingData.firstName = document.getElementById('firstName').value;
+      bookingData.lastName = document.getElementById('lastName').value;
+      bookingData.phone = document.getElementById('phone').value;
+      bookingData.email = document.getElementById('email').value;
+      bookingData.address = document.getElementById('address').value;
+      bookingData.accessNotes = document.getElementById('accessNotes').value;
+      renderStep3();
+    }
+
+    function renderStep3() {
+      setStepperState(3);
+      const photoClass = bookingData.photoColor === 'primary' ? '' : bookingData.photoColor;
+      const urgencyLabel = bookingData.urgency === 'urgent' ? '⚡ Urgence' :
+                           bookingData.urgency === 'priority' ? 'Prioritaire' : 'Standard';
+      const urgencyExtra = bookingData.urgency === 'urgent' ? '+ 35 €' :
+                           bookingData.urgency === 'priority' ? '+ 15 €' : 'Inclus';
+      document.getElementById('modalStepContent').innerHTML = `
+        <span class="modal-step-label">Étape 3/3 · Récapitulatif</span>
+        <h3>Vérifiez et confirmez</h3>
+        <p class="modal-subtitle">Aucun paiement maintenant. Vous payez après intervention.</p>
+
+        <div class="modal-summary">
+          <div class="artisan-photo ${photoClass}">${bookingData.initials}</div>
+          <div class="modal-summary-meta">
+            <strong>${bookingData.name}</strong>
+            <span>${bookingData.craft.charAt(0).toUpperCase() + bookingData.craft.slice(1)} · ${bookingData.loc}</span>
+            <div class="modal-slot-pill">${bookingData.slot}</div>
+          </div>
+        </div>
+
+        <div class="success-detail">
+          <div class="success-detail-row">
+            <span>Client</span>
+            <strong>${bookingData.firstName} ${bookingData.lastName}</strong>
+          </div>
+          <div class="success-detail-row">
+            <span>Téléphone</span>
+            <strong>${bookingData.phone}</strong>
+          </div>
+          <div class="success-detail-row">
+            <span>Adresse</span>
+            <strong>${bookingData.address}</strong>
+          </div>
+          <div class="success-detail-row">
+            <span>Niveau d'urgence</span>
+            <strong>${urgencyLabel} <span style="color: var(--c-text-muted); font-weight: 400;">(${urgencyExtra})</span></strong>
+          </div>
+          <div class="success-detail-row">
+            <span>Tarif estimé</span>
+            <strong style="color: var(--c-accent);">65 — 110 €</strong>
+          </div>
+        </div>
+
+        <div class="modal-trust">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0; margin-top: 2px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div>
+            <strong>Garantie Atelio</strong>
+            Devis ferme avant intervention. Paiement après prestation. Litige géré sous 24 h. Couverture assurance jusqu'à 50 000 €.
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-ghost" type="button" onclick="renderStep2()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Modifier
+          </button>
+          <button class="btn btn-primary btn-lg" onclick="confirmBooking()">
+            Confirmer le RDV
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+          </button>
+        </div>
+      `;
+    }
+
+    function confirmBooking() {
+      const m = document.getElementById('modalContent');
+      m.classList.add('success');
+      m.innerHTML = `
+        <div class="modal-body">
+          <div class="success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <h3 style="text-align: center;">Rendez-vous confirmé !</h3>
+          <p class="modal-subtitle" style="text-align: center;">
+            ${bookingData.name} interviendra <strong style="color: var(--c-text);">${bookingData.slot}</strong>.
+          </p>
+          <div class="success-detail">
+            <div class="success-detail-row">
+              <span>Confirmation envoyée à</span>
+              <strong>${bookingData.email}</strong>
+            </div>
+            <div class="success-detail-row">
+              <span>SMS envoyé au</span>
+              <strong>${bookingData.phone}</strong>
+            </div>
+            <div class="success-detail-row">
+              <span>Référence</span>
+              <strong>#ATL-${Math.random().toString(36).slice(2,8).toUpperCase()}</strong>
+            </div>
+          </div>
+          <p style="font-size: var(--fs-sm); color: var(--c-text-muted); margin-bottom: 24px; text-align: center;">
+            L'artisan vous appellera 15 minutes avant son arrivée.
+          </p>
+          <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+            <button class="btn btn-ghost" onclick="closeModal()">Continuer la recherche</button>
+            <button class="btn btn-primary" onclick="window.location.href='index.html'">Retour à l'accueil</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('open');
+      // Reset modal après fermeture
+      setTimeout(() => {
+        const m = document.getElementById('modalContent');
+        m.classList.remove('success');
+        bookingData = {};
+      }, 300);
+    }
+
+    // ESC ferme la modal
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Scroll nav effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 8);
+    });
+  </script>
+
+  <!-- Waitlist Brevo — config dans waitlist.js -->
+  <script src="waitlist.js"></script>
+</body>
+</html>

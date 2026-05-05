@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atelio — L'artisan qu'il vous faut, disponible quand vous voulez</title>
+  <meta name="description" content="Réservez en ligne un plombier, électricien, menuisier, ébéniste ou tapissier. +12 000 artisans certifiés, sans appels, sans relances.">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B2440'/%3E%3Crect x='0' y='19' width='32' height='13' rx='0' fill='%23DD5A2A'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='18' font-weight='800' fill='white' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+  <!-- ============================================================
+       BANNIÈRE WAITLIST — connectée à Brevo
+       ============================================================ -->
+  <div class="waitlist-banner" id="waitlistBanner" role="region" aria-label="Liste d'attente">
+    <div class="waitlist-text">
+      <span class="pulse-dot"></span>
+      <span><strong>Lancement bientôt dans votre ville</strong> — Inscrivez-vous pour être prioritaire et accéder gratuitement à nos premiers artisans vérifiés</span>
+    </div>
+    <form class="waitlist-form" id="waitlistForm" novalidate>
+      <input type="text" id="waitlistFirstName" placeholder="Prénom" autocomplete="given-name" required>
+      <input type="text" id="waitlistLastName" placeholder="Nom" autocomplete="family-name" required>
+      <input type="email" id="waitlistEmail" placeholder="Email" autocomplete="email" required>
+      <input type="tel" id="waitlistPhone" placeholder="Téléphone" autocomplete="tel" required>
+      <input type="text" id="waitlistPostal" placeholder="Code postal" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" required>
+      <button type="submit" id="waitlistSubmit">
+        Je veux être prioritaire
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </button>
+    </form>
+    <div class="waitlist-message" id="waitlistMessage" aria-live="polite"></div>
+    <button class="waitlist-close" id="waitlistClose" aria-label="Fermer la bannière">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <header class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark"><span>A</span></span>
+        Atelio
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#categories">Métiers</a></li>
+          <li><a href="#how">Comment ça marche</a></li>
+          <li><a href="#featured">Notre sélection</a></li>
+          <li><a href="#artisans">Devenir artisan</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="devenir-artisan.html" class="btn btn-ghost btn-sm">Espace artisan</a>
+        <a href="recherche.html" class="btn btn-primary btn-sm">
+          Trouver un artisan
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       HERO V2 — gradient mesh, typo dramatique
+       ============================================================ -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="hero-orb orb-3"></div>
+    </div>
+
+    <div class="container hero-inner">
+      <div class="hero-eyebrow reveal">
+        <span class="dot"></span>
+        Ouvert maintenant — 348 artisans dispos en moins d'une heure
+      </div>
+
+      <h1 class="reveal delay-1">
+        L'artisan qu'il vous faut,<br>
+        <span class="accent">disponible</span> quand vous voulez.
+      </h1>
+
+      <p class="lead reveal delay-2">
+        Plombiers, électriciens, ébénistes, tapissiers, ferronniers&hellip; Réservez en ligne en 2 minutes. Sans appels en boucle, sans devis qui traînent, sans surprises.
+      </p>
+
+      <!-- Search bar premium -->
+      <form class="search-bar reveal delay-3" id="heroSearch" role="search" aria-label="Rechercher un artisan">
+        <label class="search-field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          <div class="search-field-content">
+            <span class="search-field-label">Métier</span>
+            <input type="text" id="searchCraft" placeholder="Plombier, ébéniste…" autocomplete="off">
+          </div>
+        </label>
+        <span class="search-field-divider"></span>
+        <label class="search-field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div class="search-field-content">
+            <span class="search-field-label">Où</span>
+            <input type="text" id="searchLoc" placeholder="Code postal ou ville" autocomplete="off">
+          </div>
+        </label>
+        <button class="btn btn-primary" type="submit">
+          Rechercher
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+
+      <!-- Trust signals avec avatar group -->
+      <div class="hero-trust reveal delay-3">
+        <div class="avatar-group">
+          <div class="avatar-stack">
+            <div class="av">KB</div>
+            <div class="av">SR</div>
+            <div class="av">EC</div>
+            <div class="av">+</div>
+          </div>
+          <div class="avatar-text">
+            <div class="avatar-text-rating">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            </div>
+            <strong>4,8/5</strong> · 118 432 avis vérifiés
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       LOGO STRIP
+       ============================================================ -->
+  <div class="logo-strip">
+    <div class="container">
+      <div class="logo-strip-label">Présents dans la presse et reconnus par les fédérations professionnelles</div>
+      <div class="logo-strip-grid">
+        <div>Le&nbsp;Figaro</div>
+        <div>Les&nbsp;Echos</div>
+        <div>CAPEB</div>
+        <div>FFB</div>
+        <div>Qualibat</div>
+        <div>BFM&nbsp;TV</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       STATS V2
+       ============================================================ -->
+  <div class="container">
+    <div class="stats reveal">
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-num">12 400<small>+</small></div>
+          <div class="stat-label">Artisans certifiés sur Atelio</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">96<small>%</small></div>
+          <div class="stat-label">RDV honorés à l'heure</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">2<small>min</small></div>
+          <div class="stat-label">Pour réserver en ligne</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4,8<small>/5</small></div>
+          <div class="stat-label">118 k avis clients vérifiés</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       BENTO CATEGORIES
+       ============================================================ -->
+  <section id="categories">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">Tous les métiers</span>
+        <h2>Du dépannage urgent <span class="serif">au sur-mesure d'exception</span></h2>
+        <p>Que vous ayez besoin d'une fuite réparée ce soir ou d'un meuble restauré dans les règles de l'art, nos artisans certifiés vous répondent.</p>
+      </div>
+
+      <div class="bento reveal delay-1">
+        <a href="recherche.html?metier=plombier" class="bento-card featured">
+          <div>
+            <div class="bento-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 14v8M5 8h14M5 14h14"/><circle cx="12" cy="11" r="3"/></svg>
+            </div>
+          </div>
+          <div>
+            <div class="bento-craft">Le plus demandé</div>
+            <h3>Plombier-chauffagiste</h3>
+            <div class="bento-count">2 480 pros · dépannage 24/7 · dès 65 €/h</div>
+          </div>
+          <div class="bento-arrow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+
+        <a href="recherche.html?metier=electricien" class="bento-card">
+          <div class="bento-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div>
+            <div class="bento-craft">Bâtiment</div>
+            <h3>Électricien</h3>
+            <div class="bento-count">1 920 pros · Qualifelec</div>
+          </div>
+          <div class="bento-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+
+        <a href="recherche.html?metier=macon" class="bento-card">
+          <div class="bento-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="1"/><path d="M3 11h18M9 6V3M15 6V3M9 16h6"/></svg>
+          </div>
+          <div>
+            <div class="bento-craft">Bâtiment</div>
+            <h3>Maçon</h3>
+            <div class="bento-count">1 360 pros · gros œuvre</div>
+          </div>
+          <div class="bento-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+
+        <a href="recherche.html?metier=ebeniste" class="bento-card accent">
+          <div class="bento-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M8 6V3M16 6V3"/></svg>
+          </div>
+          <div>
+            <div class="bento-craft">Métier d'art</div>
+            <h3>Ébéniste</h3>
+            <div class="bento-count">340 pros · sur-mesure</div>
+          </div>
+          <div class="bento-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+
+        <a href="recherche.html?metier=menuisier" class="bento-card">
+          <div class="bento-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 9h6v12H9z"/></svg>
+          </div>
+          <div>
+            <div class="bento-craft">Bâtiment</div>
+            <h3>Menuisier</h3>
+            <div class="bento-count">1 580 pros</div>
+          </div>
+          <div class="bento-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+
+        <a href="recherche.html?metier=tapissier" class="bento-card">
+          <div class="bento-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11h16v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M2 11l2-6h16l2 6M12 5v6"/></svg>
+          </div>
+          <div>
+            <div class="bento-craft">Métier d'art</div>
+            <h3>Tapissier</h3>
+            <div class="bento-count">210 pros</div>
+          </div>
+          <div class="bento-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+
+        <a href="recherche.html?metier=ferronnier" class="bento-card">
+          <div class="bento-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
+          </div>
+          <div>
+            <div class="bento-craft">Métier d'art</div>
+            <h3>Ferronnier</h3>
+            <div class="bento-count">180 pros · forge</div>
+          </div>
+          <div class="bento-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COMMENT ÇA MARCHE
+       ============================================================ -->
+  <section class="steps" id="how">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">En 3 étapes</span>
+        <h2>Trois étapes. Deux minutes. <span class="serif">Zéro appel.</span></h2>
+        <p>Aussi simple que de réserver une table au restaurant. Plus jamais de standard téléphonique, de relances ou de devis qui traînent une semaine.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step reveal delay-1">
+          <div class="step-num">01</div>
+          <h3>Décrivez votre besoin</h3>
+          <p>Métier, type de prestation, votre adresse. Pour une urgence, on filtre les artisans dispo dans l'heure.</p>
+        </div>
+        <div class="step reveal delay-2">
+          <div class="step-num">02</div>
+          <h3>Comparez et choisissez</h3>
+          <p>Disponibilités, avis vérifiés, certifications, tarifs indicatifs. Tout est visible sur une seule page.</p>
+        </div>
+        <div class="step reveal delay-3">
+          <div class="step-num">03</div>
+          <h3>Réservez en ligne</h3>
+          <p>Confirmation immédiate par SMS. Paiement sécurisé après prestation. Litige ? Notre équipe intervient sous 24 h.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FEATURED ARTISAN
+       ============================================================ -->
+  <section id="featured">
+    <div class="container">
+      <div class="featured-artisan reveal">
+        <div>
+          <span class="eyebrow">Artisan du mois</span>
+          <h2 style="margin: 24px 0 16px;">Élise Charron, ébéniste depuis 22&nbsp;ans</h2>
+          <p>Atelier à Tours, spécialité restauration de meubles XVIIIᵉ et création contemporaine sur-mesure. Trois prix de la Chambre des Métiers.</p>
+          <p class="featured-quote">« Atelio a remis le savoir-faire au centre. Mes clients arrivent informés, respectueux du métier, et le prix juste se discute sereinement. »</p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <a href="recherche.html?metier=ebeniste" class="btn btn-primary">
+              Voir son profil
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+            <a href="recherche.html?metier=ebeniste" class="btn btn-ghost" style="border-color: rgba(255,255,255,0.25); color: white;">Découvrir les ébénistes</a>
+          </div>
+        </div>
+        <div class="featured-photo">EC</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TÉMOIGNAGES
+       ============================================================ -->
+  <section>
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">Ils nous font confiance</span>
+        <h2>L'expérience Atelio, <span class="serif">des deux côtés</span></h2>
+      </div>
+
+      <div class="testimonials-grid">
+        <article class="testimonial reveal delay-1">
+          <div class="stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          </div>
+          <p class="testimonial-text">Fuite un dimanche soir. J'ai trouvé un plombier à 19 h, il était chez moi à 20 h 30. Devis avant intervention, paiement après. Aucun stress.</p>
+          <div class="testimonial-author">
+            <div class="avatar">SM</div>
+            <div>
+              <div class="author-name">Sophie M.</div>
+              <div class="author-role">Cliente · Lyon 6ᵉ</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="testimonial reveal delay-2">
+          <div class="stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          </div>
+          <p class="testimonial-text">Avant Atelio, je passais 2 h par jour au téléphone à organiser mes interventions. Maintenant mon agenda se remplit tout seul. J'ai gagné une journée par semaine.</p>
+          <div class="testimonial-author">
+            <div class="avatar blue">KB</div>
+            <div>
+              <div class="author-name">Karim B.</div>
+              <div class="author-role">Électricien · Marseille</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="testimonial reveal delay-3">
+          <div class="stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          </div>
+          <p class="testimonial-text">Ébéniste depuis 22 ans, je fuyais les plateformes "à clic". Atelio met en avant le savoir-faire : photos, certifications, vrais avis. Mes clients sont mieux qualifiés.</p>
+          <div class="testimonial-author">
+            <div class="avatar green">EC</div>
+            <div>
+              <div class="author-name">Élise C.</div>
+              <div class="author-role">Ébéniste · Tours</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CTA ARTISAN — sombre, premium
+       ============================================================ -->
+  <section id="artisans" style="padding-bottom: 0;">
+    <div class="artisan-cta reveal">
+      <div class="artisan-cta-grid">
+        <div>
+          <span class="eyebrow" style="color: var(--c-accent);">✨ Lancement · 50 places Pionniers</span>
+          <h2 style="margin: 16px 0 0;">Artisan ? Rejoignez les 50 Pionniers. <span class="serif">Gratuit à vie.</span></h2>
+          <p class="lead">
+            Atelio remplace votre standard téléphonique, Kantoo Pro gère devis et factures. Pour les 50 premiers : 0 % commission 6 mois, Kantoo Pro inclus 1 an, séance photo offerte.
+          </p>
+          <ul class="benefits">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+              <div><strong>Agenda synchronisé</strong><p>Avec Google Calendar et Outlook</p></div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+              <div><strong>Devis et factures auto</strong><p>Plus jamais de paperasse en fin de journée</p></div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+              <div><strong>Paiement sécurisé</strong><p>Encaissement garanti sous 48 h</p></div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+              <div><strong>Gratuit pendant 30 jours</strong><p>Sans engagement, sans CB demandée</p></div>
+            </li>
+          </ul>
+          <div class="artisan-cta-actions">
+            <a href="devenir-artisan.html" class="btn btn-primary btn-lg">
+              Devenir Pionnier — Gratuit
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+            <a href="artisan.html" class="btn btn-ghost btn-lg">Voir le tableau de bord</a>
+          </div>
+        </div>
+
+        <div class="dashboard-mock" aria-hidden="true">
+          <div class="dashboard-mock-header">
+            <div>
+              <div class="dashboard-mock-title">Aujourd'hui · 6 RDV</div>
+              <small>Mardi 5 mai</small>
+            </div>
+            <span class="dashboard-mock-badge"><span class="dot"></span>En ligne</span>
+          </div>
+
+          <div class="appt">
+            <div class="appt-time">09:00</div>
+            <div class="appt-info">
+              <div class="appt-client">M. Dupont</div>
+              <div class="appt-job">Remplacement chauffe-eau</div>
+            </div>
+            <div class="appt-status"></div>
+          </div>
+          <div class="appt">
+            <div class="appt-time">11:30</div>
+            <div class="appt-info">
+              <div class="appt-client">Mme Lefèvre</div>
+              <div class="appt-job">Diagnostic fuite cuisine</div>
+            </div>
+            <div class="appt-status"></div>
+          </div>
+          <div class="appt">
+            <div class="appt-time">14:00</div>
+            <div class="appt-info">
+              <div class="appt-client">Boulangerie Martin</div>
+              <div class="appt-job">Maintenance plomberie pro</div>
+            </div>
+            <div class="appt-status"></div>
+          </div>
+          <div class="appt" style="background: var(--c-accent-soft);">
+            <div class="appt-time" style="color: var(--c-accent);">16:30</div>
+            <div class="appt-info">
+              <div class="appt-client">Nouvelle demande</div>
+              <div class="appt-job">Installation lave-vaisselle · 89 €</div>
+            </div>
+            <div class="appt-status" style="background: var(--c-accent);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <span class="logo-mark"><span>A</span></span>
+            Atelio
+          </a>
+          <p>La plateforme qui rend l'artisanat aussi simple à réserver qu'un cabinet médical.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Particuliers</h4>
+          <ul>
+            <li><a href="recherche.html">Trouver un artisan</a></li>
+            <li><a href="recherche.html?urgent=1">Dépannage urgent</a></li>
+            <li><a href="#how">Comment ça marche</a></li>
+            <li><a href="#">Garantie qualité</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Artisans</h4>
+          <ul>
+            <li><a href="devenir-artisan.html">Devenir Pionnier</a></li>
+            <li><a href="#">Tarifs</a></li>
+            <li><a href="artisan.html">Tableau de bord</a></li>
+            <li><a href="#">Centre d'aide pro</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Atelio</h4>
+          <ul>
+            <li><a href="#">À propos</a></li>
+            <li><a href="#">Carrières</a></li>
+            <li><a href="#">Presse</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Atelio · SAS au capital de 50 000 €</div>
+        <div style="display:flex; gap:24px;">
+          <a href="#">Mentions légales</a>
+          <a href="#">CGU</a>
+          <a href="#">Confidentialité</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       STICKY CTA — apparaît au scroll
+       ============================================================ -->
+  <div class="sticky-cta" id="stickyCta">
+    <div class="sticky-cta-text">
+      <strong>Besoin d'un artisan maintenant ?</strong>
+      Réservation en 2 minutes
+    </div>
+    <a href="recherche.html" class="btn btn-primary">
+      Trouver un artisan
+      <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <div class="toast-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <span id="toastMsg">Recherche enregistrée</span>
+  </div>
+
+  <!-- Waitlist Brevo — config dans waitlist.js -->
+  <script src="waitlist.js"></script>
+
+  <script>
+    // ====================================
+    // Nav scroll effect
+    // ====================================
+    const nav = document.getElementById('nav');
+    const stickyCta = document.getElementById('stickyCta');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      nav.classList.toggle('scrolled', y > 8);
+
+      // Sticky CTA apparaît après le hero (~700px)
+      if (y > 700 && y > lastScroll) {
+        stickyCta.classList.add('visible');
+      } else if (y < 700) {
+        stickyCta.classList.remove('visible');
+      }
+      lastScroll = y;
+    });
+
+    // ====================================
+    // Scroll reveal (Intersection Observer)
+    // ====================================
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+    reveals.forEach(r => io.observe(r));
+
+    // ====================================
+    // Search bar submit
+    // ====================================
+    document.getElementById('heroSearch').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const craft = document.getElementById('searchCraft').value.trim();
+      const loc = document.getElementById('searchLoc').value.trim();
+      const params = new URLSearchParams();
+      if (craft) params.set('metier', craft.toLowerCase());
+      if (loc) params.set('lieu', loc);
+      window.location.href = 'recherche.html' + (params.toString() ? '?' + params : '');
+    });
+
+    // ====================================
+    // Toast helper
+    // ====================================
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+  </script>
+
+</body>
+</html>

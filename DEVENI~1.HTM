@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devenir artisan Atelio · Offre Pionniers — Gratuit à vie</title>
+  <meta name="description" content="Rejoignez les 50 premiers artisans Atelio. 0% commission pendant 6 mois, Kantoo Pro inclus, séance photo offerte. Inscription gratuite et sans engagement.">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B2440'/%3E%3Crect x='0' y='19' width='32' height='13' rx='0' fill='%23DD5A2A'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='18' font-weight='800' fill='white' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+
+  <style>
+    /* ============================================================
+       PAGE DEVENIR ARTISAN — landing dédiée + formulaire pionniers
+       Reuse des composants du design system Atelio
+       ============================================================ */
+
+    /* Hero pionniers */
+    .pioneer-hero {
+      padding: var(--s-9) 0 var(--s-11);
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--c-bg) 0%, var(--c-surface-warm) 100%);
+    }
+
+    .pioneer-hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 920px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .pioneer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      padding: 8px 18px;
+      background: var(--c-accent);
+      color: white;
+      border-radius: var(--r-pill);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      box-shadow: 0 4px 14px rgba(221, 90, 42, 0.25);
+      margin-bottom: var(--s-6);
+      font-family: var(--font-head);
+    }
+    .pioneer-badge::before {
+      content: "✨";
+      font-size: 14px;
+    }
+
+    .pioneer-hero h1 {
+      font-size: clamp(40px, 7vw, 76px);
+      letter-spacing: -0.04em;
+      font-weight: 800;
+      line-height: 0.98;
+      margin-bottom: var(--s-5);
+    }
+    .pioneer-hero h1 .accent {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--c-accent);
+    }
+    .pioneer-hero h1 .strike {
+      position: relative;
+      color: var(--c-text-muted);
+      display: inline-block;
+    }
+    .pioneer-hero h1 .strike::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: -3%;
+      right: -3%;
+      height: 4px;
+      background: var(--c-accent);
+      transform: rotate(-3deg);
+    }
+
+    .pioneer-hero .lead {
+      font-size: var(--fs-lg);
+      max-width: 60ch;
+      margin: 0 auto var(--s-7);
+      color: var(--c-text-soft);
+    }
+
+    .pioneer-hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-3);
+    }
+
+    .pioneer-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      padding: 6px 14px;
+      background: var(--c-accent-soft);
+      color: var(--c-accent);
+      border-radius: var(--r-pill);
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--font-head);
+      margin-top: var(--s-4);
+    }
+    .pioneer-counter .num {
+      background: var(--c-accent);
+      color: white;
+      padding: 2px 10px;
+      border-radius: var(--r-pill);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Bénéfices grid */
+    .benefits-section {
+      padding: var(--s-10) 0;
+      background: var(--c-bg-deep);
+      border-top: 1px solid var(--c-border);
+      border-bottom: 1px solid var(--c-border);
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-5);
+      margin-top: var(--s-8);
+    }
+
+    .benefit-card {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-lg);
+      padding: var(--s-7) var(--s-6);
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition);
+    }
+    .benefit-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .benefit-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--r-md);
+      background: var(--c-accent-soft);
+      color: var(--c-accent);
+      display: grid;
+      place-items: center;
+      margin-bottom: var(--s-5);
+    }
+    .benefit-icon svg { width: 28px; height: 28px; }
+
+    .benefit-card.accent .benefit-icon { background: var(--c-primary-soft); color: var(--c-primary); }
+    .benefit-card.accent { background: linear-gradient(135deg, var(--c-primary) 0%, #15375E 100%); color: white; border: none; }
+    .benefit-card.accent h3 { color: white; }
+    .benefit-card.accent p { color: rgba(255,255,255,0.78); }
+    .benefit-card.accent .benefit-icon { background: rgba(255,255,255,0.1); color: var(--c-accent); }
+    .benefit-card.accent .benefit-value { color: var(--c-accent); }
+
+    .benefit-card h3 {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: var(--fs-xl);
+      letter-spacing: -0.02em;
+      margin-bottom: var(--s-3);
+      color: var(--c-text);
+    }
+    .benefit-card p {
+      color: var(--c-text-soft);
+      font-size: var(--fs-base);
+      line-height: 1.55;
+    }
+    .benefit-card .benefit-value {
+      display: inline-block;
+      margin-top: var(--s-4);
+      font-family: var(--font-head);
+      font-weight: 800;
+      color: var(--c-accent);
+      font-size: var(--fs-md);
+      letter-spacing: -0.01em;
+    }
+    .benefit-card .benefit-value s {
+      color: var(--c-text-muted);
+      text-decoration: line-through;
+      font-weight: 500;
+      margin-right: 8px;
+    }
+
+    /* Comment ça marche — 3 étapes pionniers */
+    .pioneer-steps {
+      padding: var(--s-10) 0;
+    }
+    .steps-pioneer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-7);
+      margin-top: var(--s-8);
+    }
+    .step-pioneer {
+      position: relative;
+      padding: var(--s-6);
+    }
+    .step-pioneer-num {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 96px;
+      color: var(--c-accent);
+      line-height: 0.8;
+      margin-bottom: var(--s-4);
+      opacity: 0.85;
+    }
+    .step-pioneer h3 {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: var(--fs-xl);
+      letter-spacing: -0.02em;
+      margin-bottom: var(--s-3);
+    }
+    .step-pioneer p {
+      color: var(--c-text-soft);
+      line-height: 1.55;
+    }
+
+    /* Form section */
+    .form-section {
+      padding: var(--s-10) 0;
+      background: var(--c-surface-warm);
+      border-top: 1px solid var(--c-border);
+    }
+
+    .form-card {
+      max-width: 720px;
+      margin: 0 auto;
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-xl);
+      padding: var(--s-8) var(--s-8);
+      box-shadow: var(--shadow-md);
+    }
+
+    .form-card-header {
+      text-align: center;
+      margin-bottom: var(--s-7);
+    }
+    .form-card-header h2 {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: var(--fs-3xl);
+      letter-spacing: -0.025em;
+      margin-bottom: var(--s-3);
+    }
+    .form-card-header p { color: var(--c-text-soft); }
+
+    .form-section-block { margin-bottom: var(--s-6); }
+    .form-section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--c-accent);
+      margin-bottom: var(--s-3);
+    }
+    .form-section-label svg { width: 13px; height: 13px; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-3);
+    }
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--s-3);
+    }
+
+    .pioneer-field { margin-bottom: var(--s-4); }
+    .pioneer-field label {
+      display: block;
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--c-text);
+      margin-bottom: 6px;
+      font-family: var(--font-head);
+    }
+    .pioneer-field input,
+    .pioneer-field select,
+    .pioneer-field textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-md);
+      background: var(--c-surface);
+      font-size: var(--fs-base);
+      font-family: inherit;
+      color: var(--c-text);
+      transition: all var(--transition-fast);
+      outline: none;
+    }
+    .pioneer-field input:focus,
+    .pioneer-field select:focus,
+    .pioneer-field textarea:focus {
+      border-color: var(--c-accent);
+      box-shadow: 0 0 0 3px rgba(221, 90, 42, 0.15);
+    }
+    .pioneer-field input.invalid,
+    .pioneer-field select.invalid,
+    .pioneer-field textarea.invalid {
+      border-color: #DC2626;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    }
+    .pioneer-field textarea { min-height: 80px; resize: vertical; }
+    .pioneer-field-hint {
+      font-size: 12px;
+      color: var(--c-text-muted);
+      margin-top: 4px;
+    }
+
+    /* Multi-select certifs */
+    .certifs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+    .certif-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--c-bg);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-md);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      font-size: 13px;
+      color: var(--c-text-soft);
+    }
+    .certif-option:hover { background: var(--c-surface); }
+    .certif-option input { width: 16px; height: 16px; accent-color: var(--c-accent); flex-shrink: 0; }
+    .certif-option:has(input:checked) {
+      background: var(--c-accent-soft);
+      border-color: var(--c-accent);
+      color: var(--c-accent);
+      font-weight: 600;
+    }
+
+    .form-message {
+      display: none;
+      margin-top: var(--s-4);
+      padding: 12px 16px;
+      border-radius: var(--r-md);
+      font-size: 14px;
+      align-items: center;
+      gap: 10px;
+    }
+    .form-message.show { display: flex; }
+    .form-message.error { background: #FEF2F2; color: #B91C1C; }
+    .form-message.success {
+      background: var(--c-success-soft);
+      color: var(--c-success);
+      flex-direction: column;
+      align-items: stretch;
+      text-align: center;
+      padding: 28px 24px;
+    }
+    .form-message svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .success-icon-big {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--c-success);
+      color: white;
+      display: grid;
+      place-items: center;
+      margin: 0 auto var(--s-4);
+    }
+    .success-icon-big svg { width: 40px; height: 40px; }
+
+    .form-submit {
+      width: 100%;
+      height: 56px;
+      font-size: var(--fs-md);
+      margin-top: var(--s-6);
+    }
+
+    .form-submit-spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 600ms linear infinite;
+    }
+
+    .form-trust {
+      display: flex;
+      justify-content: center;
+      gap: var(--s-5);
+      margin-top: var(--s-5);
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: var(--c-text-muted);
+    }
+    .form-trust span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .form-trust svg { width: 12px; height: 12px; color: var(--c-success); }
+
+    /* Testimonial pioneer */
+    .pioneer-testimonial {
+      max-width: 720px;
+      margin: var(--s-9) auto 0;
+      padding: var(--s-7);
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-lg);
+      text-align: center;
+    }
+    .pioneer-testimonial-quote {
+      font-family: var(--font-serif);
+      font-size: var(--fs-2xl);
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--c-text);
+      margin-bottom: var(--s-5);
+    }
+    .pioneer-testimonial-author {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-3);
+    }
+    .pioneer-testimonial-author .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--c-accent), #F08C5C);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-head);
+      font-weight: 700;
+    }
+    .pioneer-testimonial-author strong {
+      display: block;
+      font-family: var(--font-head);
+      color: var(--c-text);
+    }
+    .pioneer-testimonial-author span {
+      color: var(--c-text-muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 768px) {
+      .benefits-grid { grid-template-columns: 1fr; }
+      .steps-pioneer-grid { grid-template-columns: 1fr; }
+      .form-card { padding: var(--s-6) var(--s-5); }
+      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+      .certifs-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark"><span>A</span></span>
+        Atelio
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html#categories">Métiers</a></li>
+          <li><a href="index.html#how">Comment ça marche</a></li>
+          <li><a href="recherche.html">Trouver un artisan</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <a href="artisan.html" class="btn btn-ghost btn-sm">Voir la démo</a>
+        <a href="#inscription" class="btn btn-primary btn-sm">
+          M'inscrire gratuitement
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       HERO PIONNIERS — Offre gratuite à vie
+       ============================================================ -->
+  <section class="pioneer-hero">
+    <div class="hero-bg">
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+    </div>
+
+    <div class="container pioneer-hero-inner">
+      <div class="pioneer-badge">
+        Lancement · Offre Pionniers
+      </div>
+
+      <h1>
+        Devenez l'un des <span class="accent">50 premiers</span> artisans<br>
+        Atelio. <span class="strike">8 % commission.</span> Gratuit à vie.
+      </h1>
+
+      <p class="lead">
+        Atelio amène les clients, Kantoo gère vos devis, signatures et paiements. Le duo qui remplit l'agenda et clôture les chantiers proprement. Pour les 50 premiers artisans qui rejoignent : tout est offert.
+      </p>
+
+      <div class="pioneer-hero-cta">
+        <a href="#inscription" class="btn btn-primary btn-lg">
+          M'inscrire en 2 minutes
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <div class="pioneer-counter">
+        <span class="num" id="pioneerCount">12</span>
+        sur 50 places déjà prises · Paris &amp; Île-de-France
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       BÉNÉFICES — 4 cards de l'offre Pionniers
+       ============================================================ -->
+  <section class="benefits-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Ce que vous obtenez</span>
+        <h2>4 avantages réservés <span class="serif">aux Pionniers</span></h2>
+        <p>L'offre Pionniers est sans engagement, sans CB demandée, sans clause cachée. Vous restez libre à 100 %.</p>
+      </div>
+
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3>0 % de commission</h3>
+          <p>Aucun pourcentage prélevé sur vos prestations pendant <strong>les 6 premiers mois</strong>. Vous gardez 100 % de ce que vous facturez via Atelio.</p>
+          <div class="benefit-value"><s>8 % normalement</s>Économisé : ~480 € sur 6 mois</div>
+        </div>
+
+        <div class="benefit-card accent">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>
+          </div>
+          <h3>Kantoo Pro inclus 1 an</h3>
+          <p>Devis en 2 min, signature électronique eIDAS, factures auto, paiements Stripe sous 48 h. La suite complète, gratuite pendant 12 mois.</p>
+          <div class="benefit-value"><s>49 €/mois normalement</s>Économisé : 588 €</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <h3>Séance photo offerte</h3>
+          <p>Un photographe pro vient une heure dans votre atelier ou sur un chantier pour shooter des photos de qualité qui boostent votre profil et la confiance des clients.</p>
+          <div class="benefit-value">Valeur : 150 € · Offert</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <h3>Position prioritaire</h3>
+          <p>Vous apparaissez dans le top 3 des résultats pour votre métier dans votre arrondissement, à vie. Visibilité maximale, garantie pour les Pionniers.</p>
+          <div class="benefit-value">Avantage permanent</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COMMENT ÇA MARCHE — 3 étapes pour les artisans
+       ============================================================ -->
+  <section class="pioneer-steps">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Comment ça marche</span>
+        <h2>De l'inscription au premier client, <span class="serif">en 1 semaine</span></h2>
+      </div>
+
+      <div class="steps-pioneer-grid">
+        <div class="step-pioneer">
+          <div class="step-pioneer-num">01</div>
+          <h3>Vous remplissez le formulaire</h3>
+          <p>Métier, zone d'intervention, certifs, expérience. 11 champs, 2 minutes. C'est tout pour la candidature Pionniers.</p>
+        </div>
+        <div class="step-pioneer">
+          <div class="step-pioneer-num">02</div>
+          <h3>On vous appelle sous 48 h</h3>
+          <p>Validation rapide par téléphone (15 min) pour vérifier votre SIRET, vos certifications et discuter de vos disponibilités.</p>
+        </div>
+        <div class="step-pioneer">
+          <div class="step-pioneer-num">03</div>
+          <h3>Profil en ligne, premier RDV</h3>
+          <p>Photos, profil mis en ligne, et dès qu'un client cherche votre métier dans votre zone, vous recevez la notification SMS.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FORMULAIRE D'INSCRIPTION
+       ============================================================ -->
+  <section class="form-section" id="inscription">
+    <div class="container">
+      <div class="form-card">
+        <div class="form-card-header">
+          <h2>Inscription Pionniers</h2>
+          <p>Toutes les infos restent confidentielles. On vous rappelle sous 48 h, sans engagement.</p>
+        </div>
+
+        <form id="artisanForm" novalidate>
+
+          <!-- Identité -->
+          <div class="form-section-block">
+            <div class="form-section-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Vous
+            </div>
+            <div class="form-row">
+              <div class="pioneer-field">
+                <label>Prénom *</label>
+                <input type="text" name="prenom" id="aPrenom" placeholder="Karim" required autocomplete="given-name">
+              </div>
+              <div class="pioneer-field">
+                <label>Nom *</label>
+                <input type="text" name="nom" id="aNom" placeholder="Benali" required autocomplete="family-name">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="pioneer-field">
+                <label>Email *</label>
+                <input type="email" name="email" id="aEmail" placeholder="vous@email.fr" required autocomplete="email">
+              </div>
+              <div class="pioneer-field">
+                <label>Téléphone *</label>
+                <input type="tel" name="telephone" id="aPhone" placeholder="06 12 34 56 78" required autocomplete="tel">
+                <div class="pioneer-field-hint">On vous rappelle sous 48 h</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Entreprise -->
+          <div class="form-section-block">
+            <div class="form-section-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4 6 4v14M9 9h.01M9 13h.01M9 17h.01M14 9h.01M14 13h.01M14 17h.01"/></svg>
+              Votre entreprise
+            </div>
+            <div class="form-row">
+              <div class="pioneer-field">
+                <label>Nom de l'entreprise *</label>
+                <input type="text" name="entreprise" id="aEntreprise" placeholder="Plomberie KB" required>
+              </div>
+              <div class="pioneer-field">
+                <label>SIRET *</label>
+                <input type="text" name="siret" id="aSiret" placeholder="14 chiffres" maxlength="14" inputmode="numeric" required>
+                <div class="pioneer-field-hint">Visible sur Sirene/INSEE</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Métier & expérience -->
+          <div class="form-section-block">
+            <div class="form-section-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>
+              Votre métier
+            </div>
+            <div class="form-row">
+              <div class="pioneer-field">
+                <label>Métier principal *</label>
+                <select name="metier" id="aMetier" required>
+                  <option value="">— Choisir —</option>
+                  <optgroup label="Bâtiment">
+                    <option value="plombier">Plombier-chauffagiste</option>
+                    <option value="electricien">Électricien</option>
+                    <option value="macon">Maçon</option>
+                    <option value="menuisier">Menuisier</option>
+                    <option value="peintre">Peintre / décorateur</option>
+                    <option value="couvreur">Couvreur</option>
+                    <option value="carreleur">Carreleur</option>
+                    <option value="plaquiste">Plaquiste</option>
+                  </optgroup>
+                  <optgroup label="Métiers d'art">
+                    <option value="ebeniste">Ébéniste</option>
+                    <option value="tapissier">Tapissier</option>
+                    <option value="ferronnier">Ferronnier</option>
+                    <option value="restaurateur">Restaurateur de meubles</option>
+                    <option value="doreur">Doreur</option>
+                  </optgroup>
+                  <option value="autre">Autre (préciser)</option>
+                </select>
+              </div>
+              <div class="pioneer-field">
+                <label>Années d'expérience *</label>
+                <select name="experience" id="aExp" required>
+                  <option value="">— Choisir —</option>
+                  <option value="0-2">Moins de 2 ans</option>
+                  <option value="2-5">2 à 5 ans</option>
+                  <option value="5-10">5 à 10 ans</option>
+                  <option value="10-20">10 à 20 ans</option>
+                  <option value="20+">Plus de 20 ans</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Zone d'intervention -->
+          <div class="form-section-block">
+            <div class="form-section-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Zone d'intervention
+            </div>
+            <div class="form-row-3">
+              <div class="pioneer-field">
+                <label>Code postal *</label>
+                <input type="text" name="codePostal" id="aCp" placeholder="75011" pattern="[0-9]{5}" maxlength="5" inputmode="numeric" required>
+              </div>
+              <div class="pioneer-field">
+                <label>Ville *</label>
+                <input type="text" name="ville" id="aVille" placeholder="Paris" required>
+              </div>
+              <div class="pioneer-field">
+                <label>Rayon d'intervention *</label>
+                <select name="rayonKm" id="aRayon" required>
+                  <option value="">— Choisir —</option>
+                  <option value="5">5 km autour</option>
+                  <option value="10" selected>10 km autour</option>
+                  <option value="20">20 km autour</option>
+                  <option value="50">50 km autour</option>
+                  <option value="100">100 km et +</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Certifications -->
+          <div class="form-section-block">
+            <div class="form-section-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              Certifications &amp; assurances
+              <span style="font-size: 9px; font-weight: 500; letter-spacing: 0.04em; text-transform: none; background: var(--c-bg); color: var(--c-text-muted); padding: 2px 8px; border-radius: var(--r-pill); margin-left: 4px;">Cochez ce qui s'applique</span>
+            </div>
+            <div class="certifs-grid">
+              <label class="certif-option"><input type="checkbox" name="certifs" value="rge_qualibat"> RGE Qualibat</label>
+              <label class="certif-option"><input type="checkbox" name="certifs" value="qualifelec"> Qualifelec</label>
+              <label class="certif-option"><input type="checkbox" name="certifs" value="decennale"> Garantie décennale</label>
+              <label class="certif-option"><input type="checkbox" name="certifs" value="rcpro"> RC Pro à jour</label>
+              <label class="certif-option"><input type="checkbox" name="certifs" value="qualipac"> QualiPAC</label>
+              <label class="certif-option"><input type="checkbox" name="certifs" value="qualibois"> Qualibois</label>
+            </div>
+          </div>
+
+          <!-- Motivation -->
+          <div class="form-section-block">
+            <div class="form-section-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Un mot sur vous
+              <span style="font-size: 9px; font-weight: 500; letter-spacing: 0.04em; text-transform: none; background: var(--c-bg); color: var(--c-text-muted); padding: 2px 8px; border-radius: var(--r-pill); margin-left: 4px;">Optionnel</span>
+            </div>
+            <div class="pioneer-field">
+              <label>Pourquoi vous nous rejoignez ? Qu'attendez-vous d'Atelio ?</label>
+              <textarea name="motivation" id="aMotivation" placeholder="Ex : Je veux passer moins de temps au téléphone et plus en chantier. J'ai déjà une bonne réputation locale mais je manque de visibilité en ligne…"></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary form-submit" id="aSubmit">
+            Candidater à l'offre Pionniers
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+
+          <div class="form-trust">
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> Sans CB</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> Sans engagement</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> Données 100 % confidentielles</span>
+          </div>
+
+          <div class="form-message" id="aMessage"></div>
+        </form>
+      </div>
+
+      <!-- Témoignage Pionnier -->
+      <div class="pioneer-testimonial">
+        <div class="pioneer-testimonial-quote">
+          « En 3 semaines sur Atelio, j'ai eu 12 nouveaux clients sans bouger de mon atelier. Et avec Kantoo je facture le soir-même au lieu d'attendre 15 jours. »
+        </div>
+        <div class="pioneer-testimonial-author">
+          <div class="avatar">EC</div>
+          <div style="text-align: left;">
+            <strong>Élise Charron</strong>
+            <span>Ébéniste · Tours · Pionnière #04</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <span class="logo-mark"><span>A</span></span>
+            Atelio
+          </a>
+          <p>La plateforme qui rend l'artisanat aussi simple à réserver qu'un cabinet médical.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Particuliers</h4>
+          <ul>
+            <li><a href="recherche.html">Trouver un artisan</a></li>
+            <li><a href="index.html#how">Comment ça marche</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Artisans</h4>
+          <ul>
+            <li><a href="#inscription">Devenir Pionnier</a></li>
+            <li><a href="artisan.html">Voir la démo</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Atelio</h4>
+          <ul>
+            <li><a href="#">À propos</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© 2026 Atelio</div>
+        <div style="display:flex; gap:24px;">
+          <a href="#">Mentions légales</a>
+          <a href="#">CGU</a>
+          <a href="#">Confidentialité</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast (réutilisé du design system) -->
+  <div class="toast" id="toast">
+    <div class="toast-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <span id="toastMsg">Action effectuée</span>
+  </div>
+
+  <script src="artisan-signup.js"></script>
+  <script>
+    // Nav scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 8);
+    });
+
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      t.classList.add('show');
+      clearTimeout(window._tt);
+      window._tt = setTimeout(() => t.classList.remove('show'), 2500);
+    }
+  </script>
+</body>
+</html>
